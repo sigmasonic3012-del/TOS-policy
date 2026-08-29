@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeGuard — Terms & Privacy</title>
+<style>
+  :root{
+    --bg: #0a0e14;
+    --panel: #0f1620;
+    --panel-2: #121b27;
+    --line: #1e2b3a;
+    --text: #d7e2ea;
+    --dim: #7690a3;
+    --buy: #00d97e;
+    --sell: #ff4d5e;
+    --amber: #ffb020;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(0,217,126,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,217,126,0.025) 1px, transparent 1px);
+    background-size: 42px 42px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker-wrap{
+    position:sticky; top:0; z-index:50;
+    background:#060a0f;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .ticker{
+    display:inline-block;
+    padding:9px 0;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.3px;
+    animation: scroll-left 32s linear infinite;
+  }
+  .ticker span{padding:0 22px; color:var(--dim);}
+  .ticker span.up{color:var(--buy);}
+  .ticker span.down{color:var(--sell);}
+  @keyframes scroll-left{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker{animation:none;}
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:33px; z-index:49;
+    background:rgba(10,14,20,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-weight:600; font-size:15px;
+    color:var(--text); letter-spacing:0.5px;
+  }
+  .brand .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--buy);
+    box-shadow:0 0 8px var(--buy);
+  }
+  .navlinks{display:flex; gap:22px; font-family:var(--mono); font-size:12.5px;}
+  .navlinks a{color:var(--dim); text-decoration:none; transition:color .15s;}
+  .navlinks a:hover{color:var(--buy);}
+  @media (max-width:640px){ .navlinks{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; z-index:1;
+    max-width:900px; margin:0 auto;
+    padding:88px 28px 64px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px; color:var(--amber);
+    border:1px solid rgba(255,176,32,0.35);
+    background:rgba(255,176,32,0.06);
+    padding:5px 12px; border-radius:3px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:"⚠"; }
+  h1{
+    font-family:var(--sans);
+    font-weight:800;
+    font-size:clamp(2rem, 5vw, 3.2rem);
+    letter-spacing:-0.03em;
+    line-height:1.05;
+    color:#fff;
+  }
+  h1 .accent{color:var(--buy);}
+  .lede{
+    margin-top:18px; max-width:60ch;
+    color:var(--dim); font-size:16.5px;
+  }
+  .meta-row{
+    margin-top:30px; display:flex; gap:28px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:12px; color:var(--dim);
+  }
+  .meta-row b{color:var(--text); font-weight:600;}
+
+  /* ---------- ALERT BANNER (signature element) ---------- */
+  .scam-alert{
+    position:relative; z-index:1;
+    max-width:900px; margin:0 auto 56px; padding:0 28px;
+  }
+  .scam-alert .card{
+    border:1px solid rgba(255,77,94,0.4);
+    background:linear-gradient(180deg, rgba(255,77,94,0.08), rgba(255,77,94,0.02));
+    border-radius:6px;
+    padding:20px 22px;
+    display:flex; gap:16px; align-items:flex-start;
+  }
+  .scam-alert .glyph{
+    font-family:var(--mono); font-size:22px; color:var(--sell);
+    line-height:1;
+  }
+  .scam-alert h3{
+    font-family:var(--mono); font-size:13.5px; color:var(--sell);
+    text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px;
+  }
+  .scam-alert p{color:var(--dim); font-size:14.5px;}
+
+  /* ---------- SECTIONS AS TERMINAL WINDOWS ---------- */
+  main{
+    position:relative; z-index:1;
+    max-width:900px; margin:0 auto; padding:0 28px 100px;
+  }
+  .doc{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:8px;
+    margin-bottom:34px;
+    overflow:hidden;
+  }
+  .doc-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:11px 16px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+  }
+  .doc-bar .cdot{width:10px; height:10px; border-radius:50%;}
+  .doc-bar .cdot:nth-child(1){background:#ff5f56;}
+  .doc-bar .cdot:nth-child(2){background:#ffbd2e;}
+  .doc-bar .cdot:nth-child(3){background:#27c93f;}
+  .doc-bar .path{
+    margin-left:10px; font-family:var(--mono); font-size:12px; color:var(--dim);
+  }
+  .doc-body{padding:30px 32px;}
+
+  h2.section-title{
+    font-family:var(--mono);
+    font-size:12px; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--buy);
+    margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  h2.section-title::after{
+    content:""; flex:1; height:1px; background:var(--line);
+  }
+
+  article h3{
+    font-size:17px; font-weight:700; color:#fff;
+    margin-top:28px; margin-bottom:10px;
+  }
+  article h3:first-child{margin-top:0;}
+  article p, article li{
+    color:var(--dim); font-size:14.8px; margin-bottom:10px;
+  }
+  article ul{padding-left:20px; margin-bottom:14px;}
+  article strong{color:var(--text); font-weight:600;}
+  article .rule-num{
+    font-family:var(--mono); color:var(--buy); margin-right:8px;
+  }
+  code.inline{
+    font-family:var(--mono); font-size:13px;
+    background:var(--panel-2); border:1px solid var(--line);
+    padding:1px 6px; border-radius:3px; color:var(--amber);
+  }
+  .callout{
+    border-left:3px solid var(--buy);
+    background:rgba(0,217,126,0.05);
+    padding:12px 16px; margin:16px 0; border-radius:0 4px 4px 0;
+    font-size:14px; color:var(--text);
+  }
+  .callout.warn{
+    border-left-color:var(--sell);
+    background:rgba(255,77,94,0.05);
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 28px; text-align:center;
+    font-family:var(--mono); font-size:12px; color:var(--dim);
+    position:relative; z-index:1;
+  }
+  footer a{color:var(--buy); text-decoration:none;}
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--buy); outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="up">TGRD/USDT ▲ VERIFIED ESCROW</span>
+    <span class="down">SCAM-SIGNALS BLOCKED: 1,204</span>
+    <span class="up">NO CUSTODY OF USER FUNDS</span>
+    <span>READ BEFORE YOU TRADE →</span>
+    <span class="up">KYC-FREE · NON-CUSTODIAL</span>
+    <span class="down">IMPERSONATOR REPORTS: OPEN</span>
+    <span class="up">TGRD/USDT ▲ VERIFIED ESCROW</span>
+    <span class="down">SCAM-SIGNALS BLOCKED: 1,204</span>
+    <span class="up">NO CUSTODY OF USER FUNDS</span>
+    <span>READ BEFORE YOU TRADE →</span>
+    <span class="up">KYC-FREE · NON-CUSTODIAL</span>
+    <span class="down">IMPERSONATOR REPORTS: OPEN</span>
+  </div>
+</div>
+
+<nav>
+  <div class="brand"><span class="dot"></span> TradeGuard</div>
+  <div class="navlinks">
+    <a href="#terms">Terms</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#scam">Scam Safety</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Trading utility bot — read before connecting a wallet</div>
+  <h1>Terms of Service &amp; Privacy Policy for <span class="accent">TradeGuard</span></h1>
+  <p class="lede">TradeGuard is a Discord bot built for trading communities — price alerts, portfolio tracking, verified trade signals, and anti-scam tooling. TradeGuard never holds your funds, never DMs you first, and never asks for your seed phrase. This page covers how the bot works, what data it touches, and how we help stop scams before they happen.</p>
+  <div class="meta-row">
+    <span>Effective: <b>August 28, 2026</b></span>
+    <span>Operator: <b>Nova Labs LLC</b></span>
+    <span>Version: <b>2.3</b></span>
+    <span>Jurisdiction: <b>Delaware, USA</b></span>
+  </div>
+</section>
+
+<section class="scam-alert" id="scam">
+  <div class="card">
+    <div class="glyph">◆</div>
+    <div>
+      <h3>TradeGuard will never do this</h3>
+      <p>We will never DM you first, ask for your private key or seed phrase, ask you to "verify" a wallet by sending funds, request remote access to your device, or offer to double your crypto. If an account claiming to be TradeGuard does any of this, it is an impersonator — report it in <code class="inline">#report-scam</code> immediately and do not click any links it sends.</p>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <!-- TERMS OF SERVICE -->
+  <div class="doc" id="terms">
+    <div class="doc-bar">
+      <span class="cdot"></span><span class="cdot"></span><span class="cdot"></span>
+      <span class="path">/legal/terms-of-service.md</span>
+    </div>
+    <div class="doc-body">
+      <h2 class="section-title">Terms of Service</h2>
+      <article>
+
+        <h3><span class="rule-num">01</span>Acceptance of Terms</h3>
+        <p>By adding <strong>TradeGuard</strong> to a Discord server, or by using its commands, you agree to these Terms of Service ("Terms"). If you do not agree, remove the bot and discontinue use. These Terms apply alongside Discord's own <a href="https://discord.com/terms" style="color:var(--buy)">Terms of Service</a> and Community Guidelines, which always take precedence in the event of conflict.</p>
+
+        <h3><span class="rule-num">02</span>What TradeGuard Does</h3>
+        <p>TradeGuard provides trading-community utilities inside Discord, including:</p>
+        <ul>
+          <li>Real-time price alerts and watchlists for supported markets</li>
+          <li>Portfolio and P&amp;L tracking based on data you manually enter or connect read-only</li>
+          <li>Verified signal badges for trade calls posted by vetted community members</li>
+          <li>Automated scam-link and impersonation detection across server channels</li>
+          <li>Server moderation tools (slow-mode triggers, new-account flagging, link screening)</li>
+        </ul>
+        <div class="callout">TradeGuard is a <strong>non-custodial</strong> utility. It never holds, transfers, or has signing access to cryptocurrency, tokens, or fiat funds belonging to any user.</div>
+
+        <h3><span class="rule-num">03</span>No Financial Advice</h3>
+        <p>Nothing TradeGuard outputs — price alerts, "verified" signal badges, trend indicators, or community-submitted calls — constitutes financial, investment, tax, or legal advice. Markets are volatile and past performance is not indicative of future results. You are solely responsible for your own trading decisions.</p>
+
+        <h3><span class="rule-num">04</span>Anti-Scam Commitment</h3>
+        <p>TradeGuard actively scans for known scam patterns: phishing links, fake giveaway bots, impersonator accounts, and pump-and-dump coordination. Verified badges are issued only after manual review by server moderators and can be revoked at any time without notice if abuse is detected.</p>
+        <ul>
+          <li>TradeGuard staff and the bot itself will <strong>never</strong> initiate a DM asking for wallet credentials, seed phrases, or private keys</li>
+          <li>TradeGuard will <strong>never</strong> ask you to send funds to "verify," "unlock," or "boost" an account</li>
+          <li>Any command that could move funds does not exist — treat claims otherwise as a scam attempt</li>
+        </ul>
+
+        <h3><span class="rule-num">05</span>Acceptable Use</h3>
+        <p>You agree not to use TradeGuard to: distribute phishing links or malware; impersonate TradeGuard, its staff, or verified traders; manipulate markets through coordinated pump-and-dump activity; spam alerts or signals; or attempt to exploit, reverse-engineer, or overload the bot's infrastructure.</p>
+
+        <h3><span class="rule-num">06</span>Verified Signals &amp; Community Content</h3>
+        <p>Trade signals and market commentary posted by community members — even those carrying a "verified" badge — are the opinions of their authors, not of Nova Labs LLC. Verification reflects identity and track-record review only, not a guarantee of accuracy or profitability.</p>
+
+        <h3><span class="rule-num">07</span>Termination</h3>
+        <p>We may suspend or remove TradeGuard's access to your server, or restrict a specific user's access to bot features, at any time for violation of these Terms, suspected scam activity, or at our discretion, without prior notice.</p>
+
+        <h3><span class="rule-num">08</span>Disclaimer &amp; Limitation of Liability</h3>
+        <p>TradeGuard is provided "as is," without warranties of any kind. To the maximum extent permitted by law, Nova Labs LLC is not liable for trading losses, missed alerts, downtime, or damages arising from reliance on any signal, alert, or badge displayed by the bot.</p>
+
+        <h3><span class="rule-num">09</span>Changes to These Terms</h3>
+        <p>We may revise these Terms periodically. Material changes will update the effective date above. Continued use of TradeGuard after changes take effect constitutes acceptance.</p>
+
+        <h3><span class="rule-num">10</span>Governing Law</h3>
+        <p>These Terms are governed by the laws of the State of Delaware, USA, without regard to conflict-of-law principles.</p>
+
+      </article>
+    </div>
+  </div>
+
+  <!-- PRIVACY POLICY -->
+  <div class="doc" id="privacy">
+    <div class="doc-bar">
+      <span class="cdot"></span><span class="cdot"></span><span class="cdot"></span>
+      <span class="path">/legal/privacy-policy.md</span>
+    </div>
+    <div class="doc-body">
+      <h2 class="section-title">Privacy Policy</h2>
+      <article>
+
+        <h3><span class="rule-num">01</span>Information We Collect</h3>
+        <p>To operate trading-community features, TradeGuard collects:</p>
+        <ul>
+          <li><strong>Discord identifiers</strong> — user ID, server ID, channel ID, role ID</li>
+          <li><strong>Command inputs</strong> — ticker symbols, alert thresholds, watchlist entries you type into TradeGuard commands</li>
+          <li><strong>Manually entered portfolio data</strong> — trade entries you choose to log; TradeGuard never connects to exchange accounts or wallets automatically</li>
+          <li><strong>Moderation signals</strong> — flagged links, reported messages, and account-age metadata used for scam detection</li>
+        </ul>
+        <div class="callout">TradeGuard never requests, stores, or has access to wallet private keys, seed phrases, exchange API secrets, or account passwords. There is no feature that could collect this data.</div>
+
+        <h3><span class="rule-num">02</span>How We Use Information</h3>
+        <p>Collected data is used to: run price alerts and watchlists you configure; display your logged portfolio back to you; power the scam-detection and verified-badge systems; and diagnose bugs through error logging.</p>
+
+        <h3><span class="rule-num">03</span>Data Storage &amp; Security</h3>
+        <p>Data is stored on encrypted infrastructure hosted with DigitalOcean, using a MongoDB database with access restricted to authorized Nova Labs LLC personnel. We apply reasonable technical safeguards, but no system is 100% secure.</p>
+
+        <h3><span class="rule-num">04</span>Data Retention</h3>
+        <p>Server-specific configuration and alert data is retained while TradeGuard remains in your server, and deleted within 30 days of removal. Moderation logs used for scam-pattern detection may be retained up to 90 days for investigation purposes.</p>
+
+        <h3><span class="rule-num">05</span>Data Sharing</h3>
+        <p>We do not sell user data. Limited data may be shared with: infrastructure providers strictly necessary to run the bot; law enforcement, if legally compelled; or other Discord server moderators, limited to scam-report evidence you submit.</p>
+
+        <h3><span class="rule-num">06</span>Your Rights</h3>
+        <p>You may request access to, correction of, or deletion of your data by contacting us below. Removing TradeGuard from a server or deleting your logged portfolio entries via <code class="inline">/portfolio clear</code> also removes associated data.</p>
+
+        <h3><span class="rule-num">07</span>Children's Privacy</h3>
+        <p>TradeGuard is not directed at users under 13, consistent with Discord's own minimum age policy. We do not knowingly collect data from users below this age.</p>
+
+        <h3><span class="rule-num">08</span>Changes to This Policy</h3>
+        <p>We may update this Privacy Policy periodically. Material changes will be reflected in the effective date above.</p>
+
+      </article>
+    </div>
+  </div>
+
+  <div class="scam-alert" style="padding:0; margin-bottom:0;">
+    <div class="card" style="border-color: rgba(0,217,126,0.35); background:linear-gradient(180deg, rgba(0,217,126,0.07), rgba(0,217,126,0.02));">
+      <div class="glyph" style="color:var(--buy);">✓</div>
+      <div>
+        <h3 style="color:var(--buy);">How to verify you're talking to the real bot</h3>
+        <p>The genuine TradeGuard account carries the "App" tag next to its name in Discord and only responds inside servers it was added to by a server admin — it does not accept friend requests and does not send unsolicited DMs. When in doubt, ask a server moderator to confirm.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="contact">
+  <p>TradeGuard is operated by <span style="color:var(--text)">Nova Labs LLC</span> · Contact: <a href="mailto:support@novalabs.dev">support@novalabs.dev</a> · Support server: <a href="https://discord.gg/tradeguard">discord.gg/tradeguard</a></p>
+  <p style="margin-top:8px; opacity:0.6;">This page is a general template and does not constitute legal or financial advice.</p>
+</footer>
+
+</body>
+</html>
